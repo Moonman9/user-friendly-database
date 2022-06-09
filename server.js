@@ -9,6 +9,7 @@ const connection = mysql.createConnection({
   port: 3306,
   user: 'root',
   password: 'youshallpass',
+  database: 'employee_db',
 });
 
 // connection result
@@ -34,4 +35,56 @@ const initialPrompt = () => {
             'Exit',
         ],
     })
+    .then(response => {
+        switch (response.action) {
+            case 'View all departments':
+                viewAllDepartments();
+                break; 
+            case 'View all roles':
+                viewAllRoles();
+                break;
+            case 'View all employees':
+                viewAllEmployees();
+                break; 
+            case 'Add a department':
+                addDepartment();
+                break; 
+            case 'Add a role':
+                addRole();
+                break;
+            case 'Add an employee':
+                addEmployee();
+                break; 
+            case 'Update an employee role':
+                updateEmployeeRole();
+                break;
+            case 'Exit':
+                connection.end();
+                break;
+        }
+    });
+};
+
+const viewAllDepartments = () => {
+    connection.query('SELECT * FROM department', function(err, res) {
+        if(err) throw err;
+        console.table(res);
+        initialPrompt();
+    });
+};
+
+const viewAllRoles = () => {
+    connection.query('SELECT * FROM roles', function(err, res) {
+        if(err) throw err;
+        console.table(res);
+        initialPrompt();
+    });
+};
+
+const viewAllEmployees = () => {
+    connection.query('SELECT * FROM employee', function(err, res) {
+        if(err) throw err;
+        console.table(res);
+        initialPrompt();
+    });
 }

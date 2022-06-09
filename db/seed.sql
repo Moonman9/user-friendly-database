@@ -8,7 +8,7 @@ VALUES
 ('Product Oversight'),
 ('Warehouse');
 
-INSERT INTO role (title, salary, department_id)
+INSERT INTO roles (title, salary, department_id)
 VALUES
 ('Regional Manager', 80000, 1),
 ('Sales Representative', 62000, 2),
