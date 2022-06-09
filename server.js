@@ -6,15 +6,32 @@ const mysql = require('mysql2');
 // create the connection to database
 const connection = mysql.createConnection({
   host: 'localhost',
+  port: 3306,
   user: 'root',
-  database: 'employee_db',
-  password: 'youShallPass1',
-  port: 3001,
+  password: 'youshallpass',
 });
 
-// simple query
+// connection result
 connection.connect(err => {
     if (err) throw err;
-    console.log(results); // results contains rows returned by server
-    console.log(fields); // fields contains extra meta data about results, if available
+    console.log('Connected to the Employee Database'); // results connected log
+    initialPrompt();
 });
+
+const initialPrompt = () => {
+    inquirer.prompt({
+        message: 'What would you like to do?',
+        name: 'action',
+        type: 'list',
+        choices: [
+            'View all departments', 
+            'View all roles', 
+            'View all employees', 
+            'Add a department', 
+            'Add a role', 
+            'Add an employee', 
+            'Update an employee role',
+            'Exit',
+        ],
+    })
+}
