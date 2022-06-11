@@ -19,6 +19,7 @@ connection.connect(err => {
     initialPrompt();
 });
 
+// prompts user to  chose an action to perform
 const initialPrompt = () => {
     inquirer.prompt({
         message: 'What would you like to do?',
@@ -35,6 +36,7 @@ const initialPrompt = () => {
             'Exit',
         ],
     })
+    // based off of user response; will choose function to complete task
     .then(response => {
         switch (response.action) {
             case 'View all departments':
@@ -65,6 +67,7 @@ const initialPrompt = () => {
     });
 };
 
+// function using queries to look for and populate department table in the terminal
 const viewAllDepartments = () => {
     connection.query('SELECT * FROM department', function(err, res) {
         if(err) throw err;
@@ -73,6 +76,7 @@ const viewAllDepartments = () => {
     });
 };
 
+// function using queries to look for and populate roles table in the terminal
 const viewAllRoles = () => {
     connection.query('SELECT * FROM roles', function(err, res) {
         if(err) throw err;
@@ -81,11 +85,106 @@ const viewAllRoles = () => {
     });
 };
 
+// function using queries to look for and populate employees table in the terminal
 const viewAllEmployees = () => {
     connection.query('SELECT * FROM employee', function(err, res) {
         if(err) throw err;
         console.table(res);
         initialPrompt();
     });
-}
+};
 
+// initiates question for adding departments
+const addDepartment = () => {
+    inquirer.prompt([
+        {
+            name: 'department',
+            type: 'input',
+            message: 'What is the name of the department you would like to add'
+        },
+    ])
+    //uses queries to input information into department table
+    .then(input => {
+        connection.query(
+            'INSERT INTO department (name) VALUES (?)',
+            [input.department],
+            function(err, res) {
+                if (err) throw err;
+                console.log('You have successfully added a department.');
+                initialPrompt();
+            }
+        );
+    });
+};
+
+// initiates question for adding roles
+const addRole = () => {
+    inquirer.prompt([
+        {
+            name: 'title',
+            type: 'input',
+            message: 'What role title would you like to add?'
+        },
+        {
+            name: 'salary',
+            type: 'input',
+            message: 'What is the salary for the role you would like to add?'
+        },
+        {
+            name: 'department_id',
+            type: 'input',
+            message: 'What is the department ID number for the role you would like to add?'
+        },
+    ])
+    //uses queries to input information into roles table
+    .then (input => {
+        connection.query(
+            'INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)',
+            [input.title, input.salary, input.department_id],
+            function(err, res) {
+                if (err) throw err;
+                console.log('You have successfully added a new role.');
+                initialPrompt();
+            }
+        );
+    });
+};
+
+// initiates question for adding roles
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            name: 'first_name',
+            type: 'input',
+            message: "What is the first name of the employee you would like to add?"
+        },
+        {
+            name: 'last_name',
+            type: 'input',
+            message: "What is the last name of the employee you would like to add?",
+        },
+        {
+            name: 'role_id',
+            type: 'input',
+            message: "What is the role ID number of the employee you would like to add?",
+        },
+        {
+            name: 'manager_id',
+            type: 'input',
+            message: "What is the manager ID number for the employee's manager?",
+        },
+    ])
+    //uses queries to input information into employee table
+    .then (input => {
+        connection.query(
+            'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
+            [input.first_name, input.last_name, input.role_id, input.manager_id],
+            function(err, res) {
+                if (err) throw err;
+                console.log('You have successfully added a new employee.');
+                initialPrompt();
+            }
+        )
+    });
+};
+// updateEmployeeRole();
