@@ -15,7 +15,7 @@ VALUES
 ('Senior Accountant', 50000, 3),
 ('Human Resources Representative', 85000, 4),
 ('Receptionist', 41500, 5),
-('Quality Assurance Representative', 50000, 6),
+('Quality Representative', 50000, 6),
 ('Warehouse Foreman', 65000, 7);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
