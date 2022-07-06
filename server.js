@@ -137,7 +137,7 @@ const addRole = () => {
         },
     ])
     //uses queries to input information into roles table
-    .then (input => {
+    .then(input => {
         connection.query(
             'INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)',
             [input.title, input.salary, input.department_id],
@@ -175,7 +175,7 @@ const addEmployee = () => {
         },
     ])
     //uses queries to input information into employee table
-    .then (input => {
+    .then(input => {
         connection.query(
             'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
             [input.first_name, input.last_name, input.role_id, input.manager_id],
@@ -187,4 +187,31 @@ const addEmployee = () => {
         )
     });
 };
-// updateEmployeeRole();
+
+//update an employees role by id prompt
+const updateEmployeeRole = () => {
+    inquirer.prompt([
+        {
+            name: 'id',
+            type: 'input',
+            message: 'Please enter the ID of the employee you would like to update.',
+        },
+        {
+            name: 'role_id',
+            type: 'input',
+            message: 'Please enter the new desired role ID for the selected employee.',
+        },
+    ])
+    //queries used to update an employees role id by their employee id
+    .then(input => {
+        connection.query(
+            'UPDATE employee SET role_id=? WHERE id=?',
+            [input.role_id, input.id],
+            function(err, res) {
+                if (err) throw err;
+                console.log("You have successfully updated the employee's role ID.");
+                initialPrompt();
+            }
+        );
+    });
+};
